@@ -11,9 +11,9 @@ app.use(bodyParser.json())
 // Configuring the database
 const dbConfig = require('./config/db.config.js');
 const mongoose = require('mongoose');
-const userRoutes = require('./src/routes/user.routes')
+const productRoutes = require('./src/routes/product.routes')
 // using as middleware
-app.use('/api/users', userRoutes)
+app.use('/api/products', productRoutes)
 mongoose.Promise = global.Promise;
 // Connecting to the database
 mongoose.connect(dbConfig.url, {
