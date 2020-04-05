@@ -12,13 +12,17 @@ app.use(bodyParser.json());
 const dbConfig = require("./config/db.config.js");
 const mongoose = require("mongoose");
 const productRoutes = require("./src/routes/product.routes");
-// using as middleware
+const userRoutes = require("./src/routes/user.routes");
+// using as product middleware
 app.use("/api/products", productRoutes);
+// useind as user middleware
+app.use("/api/users", userRoutes);
 mongoose.Promise = global.Promise;
 // Connecting to the database
 mongoose
   .connect(dbConfig.url, {
     useNewUrlParser: true,
+    useCreateIndex: true,
   })
   .then(() => {
     console.log("Successfully connected to the database");

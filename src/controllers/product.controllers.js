@@ -1,6 +1,5 @@
 const Product = require("../models/product.model.js");
 // Configure error codes
-// const errorCodes = require("/Users/User/Desktop/Projects/full-stack-train-rest-api/constants/error.codes.js");
 const errorCodes = require("../../constants/error.codes.js");
 // Retrieve and return all products from the database.
 exports.findAll = (req, res) => {
