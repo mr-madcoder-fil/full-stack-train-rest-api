@@ -1,6 +1,4 @@
 const Product = require("../models/product.model.js");
-// Configure error codes
-const errorCodes = require("../../constants/error.codes.js");
 // Retrieve and return all products from the database.
 exports.findAll = (req, res) => {
   Product.find()
@@ -9,7 +7,6 @@ exports.findAll = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        code: errorCodes.code1,
         message:
           err.message || "Something went wrong while getting list of products.",
       });
@@ -17,21 +14,25 @@ exports.findAll = (req, res) => {
 };
 // Create and Save a new Product
 exports.create = (req, res) => {
+  // Destructure data
+
+  const { body } = req;
+  const { name, type, price, rating, warranty_years, available } = body;
+
   // Validate request
-  if (!req.body) {
+  if (!body) {
     return res.status(400).send({
-      code: errorCodes.code6,
       message: "Please fill all required field",
     });
   }
   // Create a new Product
   const product = new Product({
-    name: req.body.name,
-    type: req.body.type,
-    price: req.body.price,
-    rating: req.body.rating,
-    warranty_years: req.body.warranty_years,
-    available: req.body.available,
+    name,
+    type,
+    price,
+    rating,
+    warranty_years,
+    available,
   });
   // Save product in the database
   product
@@ -41,7 +42,6 @@ exports.create = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        code: errorCodes.code3,
         message:
           err.message || "Something went wrong while creating new product.",
       });
@@ -53,7 +53,6 @@ exports.findOne = (req, res) => {
     .then((product) => {
       if (!product) {
         return res.status(404).send({
-          code: errorCodes.code4,
           message: "Product not found with id " + req.params.id,
         });
       }
@@ -62,12 +61,10 @@ exports.findOne = (req, res) => {
     .catch((err) => {
       if (err.kind === "ObjectId") {
         return res.status(404).send({
-          code: errorCodes.code4,
           message: "Product not found with id " + req.params.id,
         });
       }
       return res.status(500).send({
-        code: errorCodes.code5,
         message: "Error getting product with id " + req.params.id,
       });
     });
@@ -77,7 +74,6 @@ exports.update = (req, res) => {
   // Validate Request
   if (!req.body) {
     return res.status(400).send({
-      code: errorCodes.code6,
       message: "Please fill all required field",
     });
   }
@@ -106,12 +102,10 @@ exports.update = (req, res) => {
     .catch((err) => {
       if (err.kind === "ObjectId") {
         return res.status(404).send({
-          code: errorCodes.code4,
           message: "product not found with id " + req.params.id,
         });
       }
       return res.status(500).send({
-        code: errorCodes.code7,
         message: "Error updating product with id " + req.params.id,
       });
     });
@@ -122,8 +116,6 @@ exports.delete = (req, res) => {
     .then((product) => {
       if (!product) {
         return res.status(404).send({
-          code: errorCodes.code4,
-
           message: "product not found with id " + req.params.id,
         });
       }
@@ -132,12 +124,10 @@ exports.delete = (req, res) => {
     .catch((err) => {
       if (err.kind === "ObjectId" || err.name === "NotFound") {
         return res.status(404).send({
-          code: errorCodes.code4,
           message: "product not found with id " + req.params.id,
         });
       }
       return res.status(500).send({
-        code: errorCodes.code8,
         message: "Could not delete product with id " + req.params.id,
       });
     });
