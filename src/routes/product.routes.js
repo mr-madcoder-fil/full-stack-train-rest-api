@@ -1,8 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const productController = require("../controllers/product.controllers");
+const productController = require("../controllers/productController");
 // Retrieve all products
-router.get("/", productController.findAll);
+router.get("/", productController.getAll);
+// Get available products
+router.get("/getavailable", productController.getAvailable);
+
 // Create a new product
 router.post("/", productController.create);
 // Retrieve a single product with id
